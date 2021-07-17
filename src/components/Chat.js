@@ -51,11 +51,11 @@ const Chat = ({match}) => {
                 <div style={{flex: 1}} className={'chat-row__chat-list'}>
                     <h1>Rooms</h1>
                     <div style={{flex: 1}}>
-                        {rooms.map(r =>
+                        {rooms ? rooms.map(r =>
                             <NavLink style={{textDecoration: 'none'}} to={'/chat/' + r.id}>
                                 <p className={'chat-row__chat-list__item'}>{r.name}</p>
                             </NavLink>
-                        )}
+                        ) : null}
                     </div>
                     <div className={'chat-row__chat-list__footer'}>
                         <TextField
@@ -72,7 +72,8 @@ const Chat = ({match}) => {
                 </div>
                 <div className={'chat-row__chat-window'}>
                     <div className={'chat-row__chat-window__chat'}>
-                        {messages.map(m =>
+
+                        {messages ? messages.map(m =>
                             roomId === m.roomId ?
                             <div className={m.uid === user.uid ? 'chat-row__chat-window__user-message-me': 'chat-row__chat-window__user-message-other'}>
                                 <Grid container alignItems={'center'}>
@@ -81,7 +82,7 @@ const Chat = ({match}) => {
                                 </Grid>
                                 <p style={{marginTop: 5}}>{m.text}</p>
                             </div> : null
-                        )}
+                        ) : null}
                     </div>
                     {roomId ?
                         <div className={'chat-row__chat-window__footer'}>
