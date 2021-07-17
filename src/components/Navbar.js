@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
 import {AppBar, Button, Grid, Toolbar, Typography} from "@material-ui/core"
-import {NavLink, Redirect} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {LOGIN_ROUTE} from "../utils/consts";
 import {Context} from "../index";
 import {useAuthState} from "react-firebase-hooks/auth";
@@ -13,7 +13,7 @@ const Navbar = () => {
         <AppBar position="static">
             <Toolbar>
                 <Typography variant="h6">
-                    {user ? 'Chat' : 'Login'}
+                    {user ? 'Chat' : 'Home'}
                 </Typography>
                 <Grid container justifyContent={'flex-end'}>
                     {user ?
@@ -23,9 +23,11 @@ const Navbar = () => {
                             </Button>
                         </NavLink>
                     :
-                        <Button variant={'contained'}>
-                            Login
-                        </Button>
+                        <NavLink to={LOGIN_ROUTE} style={{textDecoration: 'none'}}>
+                            <Button variant={'contained'} color={'secondary'}>
+                                Login
+                            </Button>
+                        </NavLink>
                     }
                 </Grid>
             </Toolbar>

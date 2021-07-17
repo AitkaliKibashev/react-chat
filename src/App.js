@@ -1,6 +1,6 @@
 import './App.css'
 import Navbar from "./components/Navbar";
-import {BrowserRouter} from "react-router-dom";
+import {HashRouter} from "react-router-dom";
 import AppRouter from "./components/AppRouter";
 import Loader from "./components/Loader";
 import {useAuthState} from "react-firebase-hooks/auth";
@@ -16,10 +16,10 @@ function App() {
     }
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             <Navbar/>
             <AppRouter/>
-        </BrowserRouter>
+        </HashRouter>
     )
 }
 
