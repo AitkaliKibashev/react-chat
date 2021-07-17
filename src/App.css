@@ -1,38 +1,72 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.chat-row {
+  margin-top: 30px;
+  display: flex;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.chat-row__chat-list {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 25%;
+  height: 60vh;
+  overflow-y: auto;
+  margin-right: 30px;
+  background: #e5e5e5;
+  padding: 10px;
 }
 
-.App-link {
-  color: #61dafb;
+.chat-row__chat-window {
+  width: 75%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.chat-row__chat-window__chat {
+  height: 60vh;
+  overflow-y: auto;
+  background: #e5e5e5;
+  padding: 10px 50px 10px 50px;
+}
+
+.chat-row__chat-window__footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.chat-row__chat-window__user-message-other {
+  width: fit-content;
+  margin-top: 5px;
+  border: 1px solid darkgray;
+  padding: 10px;
+  margin-left: auto;
+}
+
+.chat-row__chat-window__user-message-me {
+  margin-top: 5px;
+  border: 2px solid rebeccapurple;
+  padding: 10px;
+  margin-left: 0;
+  width: fit-content;
+}
+
+.chat-row__chat-list__item {
+  text-decoration: none;
+  color: black;
+  padding: 10px;
+  font-size: 24px;
+  transition: all 0.2s linear;
+}
+
+.chat-row__chat-list__item:hover {
+  text-decoration: underline;
+}
+
+.chat-row__chat-list__footer {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex: 0;
 }
