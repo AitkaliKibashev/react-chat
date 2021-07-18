@@ -24,7 +24,7 @@ export const TempUserContext = createContext(null)
 
 const tempUserState = {
     user: {
-        uid: Math.floor(Math.random(1000) * 1000),
+        uid: localStorage.getItem('uid'),
         displayName: localStorage.getItem('name'),
         photoURL: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png'
     }

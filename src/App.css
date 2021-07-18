@@ -74,3 +74,21 @@
   display: flex;
   justify-content: space-between;
 }
+
+@media (max-width: 769px) {
+  .chat-row {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .chat-row__chat-list {
+    width: 95%;
+    margin-right: 0;
+    margin-bottom: 30px;
+  }
+
+  .chat-row__chat-window {
+    width: 100%;
+  }
+}

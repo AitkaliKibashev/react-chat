@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useEffect, useRef, useState} from 'react'
 import {Avatar, Button, Container, Grid, TextField} from "@material-ui/core"
 import '../App.css'
 import {Context, TempUserContext} from "../index"
@@ -20,7 +20,25 @@ const Chat = ({match}) => {
     const [messages] = useCollectionData(firestore.collection('messages').orderBy('createdAt'))
     const [rooms, loading] = useCollectionData(firestore.collection('rooms').orderBy('createdAt'))
 
-    const sendMessage = () => {
+    const messagesEndRef = useRef(null)
+
+    const scrollToBottom = () => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight
+            console.log(messagesEndRef.current.scrollTop)
+        }
+    }
+
+    useEffect(() => {
+        console.log('YO')
+        scrollToBottom()
+    }, [messages])
+
+    const sendMessage = (e) => {
+        e.preventDefault()
+        if(!messageValue) {
+            return null
+        }
         const uid = user.uid
         const displayName = user.displayName
         const photoURL = user.photoURL
@@ -37,6 +55,9 @@ const Chat = ({match}) => {
     }
 
     const createRoom = () => {
+        if(!roomValue) {
+            return null
+        }
         firestore.collection('rooms').add({
             id: Math.floor(Math.random()*1000),
             uid: user.uid,
@@ -58,12 +79,12 @@ const Chat = ({match}) => {
                     <h1>Rooms</h1>
                     <div style={{flex: 1}}>
                         {rooms ? rooms.map(r =>
-                            <NavLink style={{textDecoration: 'none'}} to={'/chat/' + r.id}>
+                            <NavLink key={r.id} style={{textDecoration: 'none'}} to={'/chat/' + r.id}>
                                 <p className={'chat-row__chat-list__item'}>{r.name}</p>
                             </NavLink>
                         ) : null}
                     </div>
-                    <div className={'chat-row__chat-list__footer'}>
+                    <form className={'chat-row__chat-list__footer'}>
                         <TextField
                             value={roomValue}
                             onChange={(e) => setRoomValue(e.target.value)}
@@ -73,11 +94,11 @@ const Chat = ({match}) => {
                             label="Room name"
                             style={{width: '65%'}}
                         />
-                        <Button onClick={createRoom} variant={'outlined'} color={'secondary'}>Create</Button>
-                    </div>
+                        <Button type={'submit'} onClick={createRoom} variant={'outlined'} color={'secondary'}>Create</Button>
+                    </form>
                 </div>
                 <div className={'chat-row__chat-window'}>
-                    <div className={'chat-row__chat-window__chat'}>
+                    <div className={'chat-row__chat-window__chat'} ref={messagesEndRef}>
                         {messages ? messages.map(m =>
                             roomId === m.roomId ?
                             <div className={m.uid === user.uid ? 'chat-row__chat-window__user-message-me': 'chat-row__chat-window__user-message-other'}>
@@ -90,7 +111,7 @@ const Chat = ({match}) => {
                         ) : null}
                     </div>
                     {roomId ?
-                        <div className={'chat-row__chat-window__footer'}>
+                        <form onSubmit={sendMessage} className={'chat-row__chat-window__footer'}>
                             <TextField
                                 value={messageValue}
                                 onChange={(e) => setMessageValue(e.target.value)}
@@ -99,8 +120,8 @@ const Chat = ({match}) => {
                                 label={"Your text"}
                                 style={{width: '90%'}}
                             />
-                            <Button onClick={sendMessage} variant={'outlined'} color={'secondary'}>Send</Button>
-                        </div>
+                            <Button type={'submit'} variant={'outlined'} color={'secondary'}>Send</Button>
+                        </form>
                         :
                         null
                     }

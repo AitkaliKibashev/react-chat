@@ -15,6 +15,7 @@ const Login = () => {
 
     const createTempAcc = () => {
         localStorage.setItem('name', value)
+        localStorage.setItem('uid', toString(Math.floor(Math.random(1000) * 1000)))
         window.location.reload()
         setValue('')
     }
