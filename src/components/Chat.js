@@ -54,7 +54,8 @@ const Chat = ({match}) => {
         setMessageValue('')
     }
 
-    const createRoom = () => {
+    const createRoom = (e) => {
+        e.preventDefault()
         if(!roomValue) {
             return null
         }
@@ -84,7 +85,7 @@ const Chat = ({match}) => {
                             </NavLink>
                         ) : null}
                     </div>
-                    <form className={'chat-row__chat-list__footer'}>
+                    <form onSubmit={createRoom} className={'chat-row__chat-list__footer'}>
                         <TextField
                             value={roomValue}
                             onChange={(e) => setRoomValue(e.target.value)}
@@ -94,14 +95,14 @@ const Chat = ({match}) => {
                             label="Room name"
                             style={{width: '65%'}}
                         />
-                        <Button type={'submit'} onClick={createRoom} variant={'outlined'} color={'secondary'}>Create</Button>
+                        <Button type={'submit'} variant={'outlined'} color={'secondary'}>Create</Button>
                     </form>
                 </div>
                 <div className={'chat-row__chat-window'}>
                     <div className={'chat-row__chat-window__chat'} ref={messagesEndRef}>
                         {messages ? messages.map(m =>
                             roomId === m.roomId ?
-                            <div className={m.uid === user.uid ? 'chat-row__chat-window__user-message-me': 'chat-row__chat-window__user-message-other'}>
+                            <div className={m.uid === user.uid ? 'chat-row__chat-window__user-message-other' : 'chat-row__chat-window__user-message-me'}>
                                 <Grid container alignItems={'center'}>
                                     <Avatar src={m.photoURL} style={{marginRight: 10}}/>
                                     <p>{m.displayName}</p>

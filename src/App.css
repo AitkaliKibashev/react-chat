@@ -36,19 +36,19 @@
   margin-top: 25px;
 }
 
-.chat-row__chat-window__user-message-other {
+.chat-row__chat-window__user-message-me {
   width: fit-content;
   margin-top: 5px;
   border: 1px solid darkgray;
   padding: 10px;
-  margin-left: auto;
+  margin-left: 0;
 }
 
-.chat-row__chat-window__user-message-me {
+.chat-row__chat-window__user-message-other {
   margin-top: 5px;
   border: 2px solid rebeccapurple;
   padding: 10px;
-  margin-left: 0;
+  margin-left: auto;
   width: fit-content;
 }
 
