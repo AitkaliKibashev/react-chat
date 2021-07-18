@@ -20,13 +20,25 @@ export const Context = createContext(null)
 const auth = firebase.auth()
 const firestore = firebase.firestore()
 
+export const TempUserContext = createContext(null)
+
+const tempUserState = {
+    user: {
+        uid: Math.floor(Math.random(1000) * 1000),
+        displayName: localStorage.getItem('name'),
+        photoURL: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png'
+    }
+}
+
 ReactDOM.render(
   <Context.Provider value={{
       firebase,
       auth,
       firestore
   }}>
-      <App />
+      <TempUserContext.Provider value={tempUserState}>
+          <App />
+      </TempUserContext.Provider>
   </Context.Provider>,
   document.getElementById('root')
 )

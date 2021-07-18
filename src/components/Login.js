@@ -1,15 +1,22 @@
-import React, {useContext} from 'react'
-import {Box, Button, Container, Grid} from "@material-ui/core";
+import React, {useContext, useState} from 'react'
+import {Box, Button, Container, Grid, TextField} from "@material-ui/core";
 import {Context} from "../index";
 import firebase from "firebase";
 
 const Login = () => {
     const {auth} = useContext(Context)
+    const [value, setValue] = useState('')
 
-    const login = async () => {
+    const loginWithGoogle = async () => {
         const provider = new firebase.auth.GoogleAuthProvider()
-        const {user} = await auth.signInWithRedirect(provider)
-        console.log(user)
+        provider.addScope('https://www.googleapis.com/auth/contacts.readonly')
+        await auth.signInWithRedirect(provider)
+    }
+
+    const createTempAcc = () => {
+        localStorage.setItem('name', value)
+        window.location.reload()
+        setValue('')
     }
 
     return (
@@ -20,8 +27,31 @@ const Login = () => {
                   justifyContent={'center'}
             >
                 <Grid style={{width: 400, background: 'lightgray'}} container justifyContent={'center'} alignItems={'center'}>
-                    <Box p={5}>
-                        <Button onClick={login} variant={'outlined'}>Login with Google</Button>
+                    <Box p={5} style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center'
+                    }}>
+                        <Button onClick={loginWithGoogle} variant={'outlined'}>Login with Google</Button>
+                        <p style={{
+                            margin: '10px 0'
+                        }}>Or log in as a temporary user</p>
+                        <div className={'temp-user-block'}>
+                            <TextField
+                                value={value}
+                                onChange={(e) => setValue(e.target.value)}
+                                rowsMax={2}
+                                variant={'outlined'}
+                                color={'secondary'}
+                                label="Name"
+                                style={{width: '70%'}}
+                                size={'small'}
+                            />
+                            <Button
+                                onClick={createTempAcc} variant={'outlined'} color={'secondary'}
+                            >Go</Button>
+                        </div>
+
                     </Box>
                 </Grid>
             </Grid>

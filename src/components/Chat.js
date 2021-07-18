@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react'
 import {Avatar, Button, Container, Grid, TextField} from "@material-ui/core"
 import '../App.css'
-import {Context} from "../index"
+import {Context, TempUserContext} from "../index"
 import firebase from "firebase"
 import {useCollectionData} from "react-firebase-hooks/firestore"
 import Loader from "./Loader"
@@ -12,19 +12,24 @@ const Chat = ({match}) => {
     const [messageValue, setMessageValue] = useState('')
     const [roomValue, setRoomValue] = useState('')
     const {auth, firestore} = useContext(Context)
-
-    const [user] = useAuthState(auth)
+    const tempUserState = useContext(TempUserContext)
+    const [googleUser] = useAuthState(auth)
+    const user = googleUser ? googleUser : tempUserState.user
     const roomId = match.params.roomId
 
     const [messages] = useCollectionData(firestore.collection('messages').orderBy('createdAt'))
     const [rooms, loading] = useCollectionData(firestore.collection('rooms').orderBy('createdAt'))
 
     const sendMessage = () => {
+        const uid = user.uid
+        const displayName = user.displayName
+        const photoURL = user.photoURL
+
         firestore.collection('messages').add({
-            roomId: roomId,
-            uid: user.uid,
-            displayName: user.displayName,
-            photoURL: user.photoURL,
+            roomId,
+            uid,
+            displayName,
+            photoURL,
             text: messageValue,
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         })
@@ -34,6 +39,7 @@ const Chat = ({match}) => {
     const createRoom = () => {
         firestore.collection('rooms').add({
             id: Math.floor(Math.random()*1000),
+            uid: user.uid,
             name: roomValue,
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         })
@@ -72,7 +78,6 @@ const Chat = ({match}) => {
                 </div>
                 <div className={'chat-row__chat-window'}>
                     <div className={'chat-row__chat-window__chat'}>
-
                         {messages ? messages.map(m =>
                             roomId === m.roomId ?
                             <div className={m.uid === user.uid ? 'chat-row__chat-window__user-message-me': 'chat-row__chat-window__user-message-other'}>
